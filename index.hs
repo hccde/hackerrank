@@ -17,31 +17,28 @@ computeIndex::Int->Int->Int->Int
 computeIndex query lasta n = rem (Bits.xor lasta query) n
 
 
-runQuery::[Int]-> Int
 lastAnswer::Int
 lastAnswer = 0
-dict =  replicate 1 []
-runQuery cmd = x where 
+
+modifArray::[[Int]]->Int->[Int]->[[Int]]
+modifArray dict index el = a++[el]++b --todo 修改
+    where 
+        (a, b) = Data.List.splitAt (index+1) dict
+
+runQuery::Int->[[Int]] -> [Int] -> [[Int]]
+runQuery n dict cmd= x where 
                     y = cmd !! 0
-                    lastAnswer = y
-                    index = computeIndex (cmd!!1) $ lastAnswer;
-                    -- dict!!index = (cmd!!3):(dict!!index)
-                    x
-                        | y == 1 = 1
-                        | y == 2 = 2
+                    index = computeIndex (cmd!!1) lastAnswer  n;
+                    x = if (cmd !! 0) == 1 
+                            then  modifArray dict index $ (dict !! index) ++ [(cmd !! 2)]
+                            else  modifArray dict n $ (dict !! n) ++ [(dict !! index) !! 0]
 
 dynamicArray n queries = do
-    let res = Data.List.map (\x -> runQuery x) queries
-    -- putStr  $ show $ computeIndex 1 lastAnswer n
-    return res
-    where 
-        {putStr "ok"}
-        -- dict = replicate n []
-        -- putStr $ show dict
-    -- Data.List.map 
-    --
-    -- Write your code here.
-    --
+    -- let x = modifArray [[1],[2]] 0 [3] 
+    let f = runQuery n
+    let res = Data.List.foldl f  (replicate (n+1) []) queries
+    -- putStr  $ show $ (res)
+    return (res !! n)
 
 readMultipleLinesAsStringArray :: Int -> IO [String]
 readMultipleLinesAsStringArray 0 = return []
