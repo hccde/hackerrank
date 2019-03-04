@@ -20,10 +20,16 @@ computeIndex query lasta n = rem (Bits.xor lasta query) n
 lastAnswer::Int
 lastAnswer = 0
 
+-- modfiList::[Int]->Int->Int->[Int]
+-- modfiList list index elm =  pre ++ [elm] ++ behind  where
+--             pre = List.take index list
+--             behind = List.drop (index+1) $ list;
+
 modifArray::[[Int]]->Int->[Int]->[[Int]]
-modifArray dict index el = a++[el]++b --todo 修改
+modifArray dict index el = a++[el]++b
     where 
-        (a, b) = Data.List.splitAt (index+1) dict
+        a = Data.List.take index dict
+        b = Data.List.drop (index+1) dict
 
 runQuery::Int->[[Int]] -> [Int] -> [[Int]]
 runQuery n dict cmd= x where 
