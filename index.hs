@@ -20,6 +20,9 @@ computeIndex query lasta n = rem (Bits.xor lasta query) n
 lastAnswer::Int
 lastAnswer = 0
 
+fn::[[Int]]->Int->[[Int]]
+fn dict a = dict where
+        t = putStrLn "1"
 -- modfiList::[Int]->Int->Int->[Int]
 -- modfiList list index elm =  pre ++ [elm] ++ behind  where
 --             pre = List.take index list
@@ -43,7 +46,7 @@ runQuery n dict cmd= x where
                         else  my_last (dict !! n)
                     x = if (cmd !! 0) == 1 
                             then  modifArray dict index $ (dict !! index) ++ [(cmd !! 2)]
-                            else  modifArray dict n $ (dict !! n) ++ [lastAnswer]
+                            else fn dict lastAnswer
                             -- else dict
 
 dynamicArray n queries = do
