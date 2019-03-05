@@ -9,4 +9,9 @@ closureFn::Int->Int->Int
 closureFn param = (\x -> x+param+inner) where
     inner = 3
 
-main = putStrLn $ show 1
+globalData = "a"
+fn n = a where
+    c = globalData
+    t = putStrLn $ show globalData;
+    a = t
+main = fn 4
