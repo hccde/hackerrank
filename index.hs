@@ -31,19 +31,27 @@ modifArray dict index el = a++[el]++b
         a = Data.List.take index dict
         b = Data.List.drop (index+1) dict
 
+my_last::[Int]->Int
+my_last list | list==[] = 0
+        | otherwise = Data.List.last list
 runQuery::Int->[[Int]] -> [Int] -> [[Int]]
 runQuery n dict cmd= x where 
                     y = cmd !! 0
                     index = computeIndex (cmd!!1) lastAnswer  n;
+                    lastAnswer =  if (cmd !! 0) == 2 
+                        then (dict !! index) !! (cmd !! 2)
+                        else  my_last (dict !! n)
                     x = if (cmd !! 0) == 1 
                             then  modifArray dict index $ (dict !! index) ++ [(cmd !! 2)]
-                            else  modifArray dict n $ (dict !! n) ++ [(dict !! index) !! 0]
+                            else  modifArray dict n $ (dict !! n) ++ [lastAnswer]
+                            -- else dict
 
 dynamicArray n queries = do
     -- let x = modifArray [[1],[2]] 0 [3] 
     let f = runQuery n
-    let res = Data.List.foldl f  (replicate (n+1) []) queries
-    -- putStr  $ show $ (res)
+    let dict = replicate (n+1) []
+    let res = Data.List.foldl' f dict queries
+    putStr  $ show $ (res)
     return (res !! n)
 
 readMultipleLinesAsStringArray :: Int -> IO [String]

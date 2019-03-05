@@ -5,4 +5,8 @@ modfiList list index elm =  pre ++ [elm] ++ behind  where
             behind = List.drop (index+1) $ list;
 main::IO()
 
-main = putStrLn $ show $ modfiList [1,2,3,4,5,6,7] 3 3
+closureFn::Int->Int->Int
+closureFn param = (\x -> x+param+inner) where
+    inner = 3
+
+main = putStrLn $ show 1
